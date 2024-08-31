@@ -1,0 +1,24 @@
+.chat {
+    min-height: 100vh;
+    background: linear-gradient(120deg, #48a6e4, #c197d3);
+    display: grid;
+    place-items: center;
+}
+
+.chat-container {
+    width: 95%;
+    height: 75vh;
+    background-color: white;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+}
+
+@media screen and (min-width: 1000px) {
+    .chat-container {
+        width: 70%;
+        height: 75vh;
+        background-color: white;
+        display: grid;
+        grid-template-rows: 1fr 2fr 1fr;
+    }
+}
