@@ -1,0 +1,136 @@
+.chat-box {
+    background-color: rgb(225, 231, 229);
+    height: 75vh;
+    position: relative;
+}
+
+.chat-user {
+    display: flex;
+    padding: 10px 15px;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #c6c6c6;
+}
+
+.chat-user img {
+    width: 25px;
+    border-radius: 50%;
+}
+
+.chat-user img:first-child {
+    width: 38px;
+    aspect-ratio: 1;
+}
+
+.chat-user p {
+    flex: 1;
+    font-weight: 500;
+    font-size: 20px;
+    color: #393939;
+    display: flex;
+    align-items: center;
+}
+
+.chat-input {
+    display: flex;
+    align-items: center;
+    background-color: aliceblue;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    gap: 12px;
+    padding: 10px 15px;
+}
+
+.chat-img {
+    width: 30px;
+    cursor: pointer;
+}
+
+.chat-input label {
+    display: flex;
+    align-items: center;
+}
+
+/* .chat-input label img {
+    width: 22px;
+} */
+
+.chat-input input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    font-size: 16px;
+}
+
+.chat-msg {
+    height: calc(100% - 75px);
+    overflow-y: scroll;
+    padding-bottom: 50px;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+
+
+.chat-msg::-webkit-scrollbar {
+    width: 6px;
+    background: rgb(225, 231, 229)
+}
+
+.chat-msg::-webkit-scrollbar-thumb {
+    background: rgb(207, 219, 215)
+}
+
+.sender-msg div img,
+.reciver-msg div img {
+    width: 30px;
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+}
+
+
+.sender-msg,
+.reciver-msg {
+    display: flex;
+    align-items: end;
+    gap: 5px;
+    justify-content: end;
+    padding: 0px 15px;
+}
+
+.reciver-msg {
+    flex-direction: row-reverse;
+    justify-content: start;
+}
+
+.msg {
+    background-color: #077EFF;
+    color: white;
+    padding: 8px;
+    max-width: 250px;
+    font-size: 15px;
+    font-weight: 400;
+    border-radius: 8px 8px 0 8px;
+    /* margin: 10px 15px; */
+    margin-bottom: 30px;
+}
+
+.reciver-msg .msg {
+    border-radius: 8px 8px 8px 0;
+}
+
+.sender-msg div,
+.reciver-msg div {
+    text-align: center;
+    font-size: 13px;
+}
+
+.msg-img {
+    width: 230px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+}

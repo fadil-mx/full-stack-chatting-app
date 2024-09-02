@@ -35,6 +35,7 @@
 }
 
 .search-bar input {
+    flex: 1;
     background-color: #002670;
     border: none;
     outline: none;
