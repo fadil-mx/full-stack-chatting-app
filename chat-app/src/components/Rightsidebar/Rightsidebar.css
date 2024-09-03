@@ -1,0 +1,96 @@
+.rs {
+    background: #001030;
+    color: white;
+    height: 75vh;
+    overflow-y: scroll;
+    position: relative;
+    padding-left: 6px;
+}
+
+
+
+.rs::-webkit-scrollbar {
+    width: 6px;
+    background: #001030
+}
+
+.rs::-webkit-scrollbar-thumb {
+    background: #001030
+}
+
+
+.rs-profile {
+    padding-top: 60px;
+    text-align: center;
+    max-width: 70%;
+    margin: auto;
+}
+
+.rs-profile img {
+    width: 100px;
+    border-radius: 50%;
+}
+
+.rs-profile h3 {
+    font-size: 18px;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin: 5px 0;
+}
+
+.rs-profile p {
+    font-size: 14px;
+    opacity: 80%;
+}
+
+.rs hr {
+    margin: 10px 0;
+    border: 1px solid #dfd7d750;
+}
+
+.rs-media {
+    padding: 0 20px;
+    font-size: 15px;
+}
+
+.rs-media div {
+    max-height: 180px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 5px;
+    overflow-y: scroll;
+    margin-top: 8px;
+
+}
+
+.rs-media div::-webkit-scrollbar {
+    display: none;
+}
+
+.rs-media img {
+    width: 90px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.rs-media img:hover {
+    opacity: 0.8;
+}
+
+.rs button {
+    background-color: #077EFF;
+    color: white;
+    padding: 10px 65px;
+    border: none;
+    border-radius: 50px;
+    position: absolute;
+    bottom: 20px;
+    left: 25%;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 300;
+    border-radius: 20px;
+}
