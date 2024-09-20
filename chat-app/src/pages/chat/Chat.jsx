@@ -4,6 +4,13 @@ import Leftsidebar from "../../components/LeftSideBar/Leftsidebar";
 import Chatbox from "../../components/Chatbox/Chatbox";
 import Rightsidebar from "../../components/Rightsidebar/Rightsidebar";
 const Chat = () => {
+  // const [loading, setloading] = useState(true);
+
+  // useEffect(() => {
+  //   if (chatdata && userdata) {
+  //     setloading(false);
+  //   }
+  // }, [chatdata, userdata]);
   return (
     <div className="chat">
       <div className="chat-container">

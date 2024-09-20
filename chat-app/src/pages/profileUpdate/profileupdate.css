@@ -1,0 +1,81 @@
+.profile {
+    min-height: 100vh;
+    background: url(/background.png) no-repeat;
+    background-size: cover;
+    display: grid;
+    place-items: center;
+
+}
+
+.profile-container {
+    background-color: rgb(199, 201, 230);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 700px;
+    border-radius: 10px;
+}
+
+.profile-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px 30px;
+    border-radius: 10px;
+
+
+}
+
+.profile .chat-logo {
+
+    max-width: 160px;
+    aspect-ratio: 1/1;
+    margin: 20px auto;
+    border-radius: 50%;
+
+}
+
+.avathar {
+    display: flex;
+    gap: 18px;
+    justify-content: center;
+    align-items: center;
+    font-weight: 300;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.avathar img {
+    width: 80px;
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+}
+
+.profile-container form input {
+    padding: 8px 6px;
+    border: 1px solid #000000;
+    border-radius: 10px;
+}
+
+.profile-container form input::placeholder {
+    color: #000000;
+}
+
+.profile-container form textarea {
+    padding: 8px 6px;
+    border: 1px solid #000000;
+    border-radius: 10px;
+}
+
+.profile-container form textarea::placeholder {
+    color: #000000;
+}
+
+.profile-container form button {
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    background-color: #2e86de;
+    color: white;
+    cursor: pointer;
+}

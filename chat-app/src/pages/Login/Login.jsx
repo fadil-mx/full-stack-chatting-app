@@ -1,20 +1,63 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Login.css";
 import assets from "../../assets/assets";
+import { singup, loginuser } from "../../config/firebase";
 
 const Login = () => {
   const [curstate, setCurstate] = useState("signup");
+  const [username, setusername] = useState("");
+  const [email, setemail] = useState("");
+  const [password, setpassword] = useState("");
+
+  // useEffect(() => {
+  //   console.log(username, email, password);
+  // }, [username, email, password]);
+
+  const submithandler = async (e) => {
+    e.preventDefault();
+    try {
+      if (curstate === "signup") {
+        await singup(username, email, password);
+      } else {
+        await loginuser(email, password);
+      }
+    } catch (error) {
+      console.error(error.message);
+      alert(error.message); // or use toast for better UI feedback
+    }
+  };
 
   return (
     <div className="login">
       <img src={assets.logo_big} className="logo" alt="" />
-      <form className="login-form">
+      <form onSubmit={submithandler} className="login-form">
         <h2>{curstate === "signup" ? "Sign up" : "Login"}</h2>
-        <input type="text" placeholder="Username" className="form-input" />
+        <input
+          onChange={(e) => {
+            setusername(e.target.value);
+          }}
+          type="text"
+          placeholder="Username"
+          className="form-input"
+        />
         {curstate === "signup" ? (
-          <input type="email" placeholder="email" className="form-input" />
+          <input
+            onChange={(e) => {
+              setemail(e.target.value);
+            }}
+            type="email"
+            placeholder="Email"
+            className="form-input"
+          />
         ) : null}
-        <input type="password" placeholder="Password" className="form-input" />
+        <input
+          onChange={(e) => {
+            setpassword(e.target.value);
+          }}
+          type="password"
+          placeholder="Password"
+          className="form-input"
+        />
         <button type="submit">
           {curstate === "signup" ? "Create account" : "Login"}
         </button>
