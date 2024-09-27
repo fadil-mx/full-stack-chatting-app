@@ -1,37 +1,74 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Rightsidebar.css";
 import assets from "../../assets/assets";
 import { logout } from "../../config/firebase";
+import { appcontext } from "../../context/appcontext";
 const Rightsidebar = () => {
-  return (
+  const {
+    userdata,
+    chatdata,
+    chatuser,
+    messages,
+    messagesId,
+    setchatuser,
+    setmessagesId,
+  } = useContext(appcontext);
+
+  const [msgimg, setmsgimg] = useState([]);
+  const [online, setIsOnline] = useState(false);
+
+  useEffect(() => {
+    let tempvar = [];
+    messages.map((msg) => {
+      if (msg.image) {
+        tempvar.push(msg.image);
+      }
+    });
+    // console.log(tempvar);
+    setmsgimg(tempvar);
+    // console.log(msgimg);
+  }, [messages]);
+
+  return chatuser ? (
     <div className="rs">
       <div className="rs-profile">
-        <img src={assets.profile_img} alt="" />
+        <img src={chatuser.userData.avathar} alt="" />
         <h3>
-          Fadil Shereef <img src={assets.green_dot} alt="" className="dot" />
+          {chatuser.userData.username}
+          {Date.now() - chatuser.userData.lastseen <= 60000 ? (
+            <img src={assets.green_dot} alt="" className="dot" />
+          ) : null}
         </h3>
-        <p>Hey, There i am Fadil Shereef Using Chat App</p>
+        <p>{chatuser.userData.bio}</p>
       </div>
       <hr />
       <div className="rs-media">
         <p>Media</p>
         <div>
-          <img src={assets.pic1} alt="" />
-          <img src={assets.pic2} alt="" />
-          <img src={assets.pic3} alt="" />
-          <img src={assets.pic4} alt="" />
-          <img src={assets.pic2} alt="" />
-          <img src={assets.pic3} alt="" />
-          <img src={assets.pic4} alt="" />
-          <img src={assets.pic1} alt="" />
-          <img src={assets.pic2} alt="" />
-          <img src={assets.pic3} alt="" />
-          <img src={assets.pic4} alt="" />
-          <img src={assets.pic2} alt="" />
-          <img src={assets.pic3} alt="" />
-          <img src={assets.pic4} alt="" />
+          {msgimg.map((img, index) => {
+            return (
+              <img
+                onClick={() => {
+                  window.open(img);
+                }}
+                key={index}
+                src={img}
+                alt=""
+              />
+            );
+          })}
         </div>
       </div>
+      <button
+        onClick={() => {
+          logout();
+        }}
+      >
+        Log Out
+      </button>
+    </div>
+  ) : (
+    <div className="rs">
       <button
         onClick={() => {
           logout();

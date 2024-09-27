@@ -11,6 +11,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../../config/firebase";
 import { toast } from "react-toastify";
+import upload from "../../../lib/upload";
 
 const Chatbox = () => {
   const {
@@ -22,6 +23,8 @@ const Chatbox = () => {
     messages,
     setmessages,
     setmessagesId,
+    chatvisible,
+    setchatvisible,
   } = useContext(appcontext);
 
   const [input, setinput] = useState("");
@@ -66,9 +69,9 @@ const Chatbox = () => {
 
   const settime = (timestamp) => {
     let date = timestamp.toDate();
-    console.log(date);
+
     let hours = date.getHours();
-    console.log(hours);
+
     let minutes = date.getMinutes();
     console.log(minutes);
     if (hours > 12) {
@@ -90,15 +93,64 @@ const Chatbox = () => {
     }
   }, [messagesId]);
 
+  const sendimage = async (e) => {
+    try {
+      const fileurl = await upload(e.target.files[0]);
+      if (fileurl && messagesId) {
+        await updateDoc(doc(db, "messages", messagesId), {
+          messages: arrayUnion({
+            senderId: userdata.id,
+            image: fileurl,
+            createdAt: new Date(),
+          }),
+        });
+        const userId = [chatuser.rId, userdata.id];
+        userId.forEach(async (id) => {
+          const userchatref = doc(db, "chats", id);
+          const userchatsnapshot = await getDoc(userchatref);
+          if (userchatsnapshot.exists()) {
+            const userchatdata = userchatsnapshot.data();
+            // console.log(userchatdata.chatData[0]);
+            const chatindex = userchatdata.chatData.findIndex(
+              (c) => c.messageId === messagesId
+            );
+            userchatdata.chatData[chatindex].lastmessage = "image";
+            userchatdata.chatData[chatindex].updatedAt = new Date();
+            if (userchatdata.chatData[chatindex].rId === userdata.id) {
+              userchatdata.chatData[chatindex].messageSeen = false;
+            }
+            await updateDoc(userchatref, {
+              chatData: userchatdata.chatData,
+            });
+          }
+        });
+      }
+    } catch (error) {
+      console.log(error.message);
+      toast.error(error.message);
+    }
+  };
+
   return chatuser ? (
-    <div className="chat-box">
+    <div className={`chat-box ${chatvisible ? "" : "hidden"}`}>
       <div className="chat-user">
         <img src={chatuser.userData.avathar} alt="" />
         <p>
           {chatuser.userData.name}
-          <img className="dot" src={assets.green_dot} alt="status" />
+          {Date.now() - chatuser.userData.lastseen <= 60000 ? (
+            <img src={assets.green_dot} alt="" className="dot" />
+          ) : null}
         </p>
         <img className="help" src={assets.help_icon} alt="" />
+
+        <img
+          onClick={() => {
+            setchatvisible(false);
+          }}
+          src={assets.arrow_icon}
+          className="arrow"
+          alt="arrowimg"
+        />
       </div>
 
       <div className="chat-msg">
@@ -110,7 +162,11 @@ const Chatbox = () => {
                 message.senderId === userdata.id ? "sender-msg" : "reciver-msg"
               }
             >
-              <p className="msg">{message.message}</p>
+              {message.image ? (
+                <img className="msg-img" src={message.image} alt="error" />
+              ) : (
+                <p className="msg">{message.message}</p>
+              )}
               <div>
                 <img
                   src={
@@ -125,20 +181,6 @@ const Chatbox = () => {
             </div>
           );
         })}
-        <div className="sender-msg">
-          <img className="msg-img" src={assets.pic1} alt="" />
-          <div>
-            <img src={assets.profile_img} alt="" />
-            <p>2.50</p>
-          </div>
-        </div>
-        <div className="reciver-msg">
-          <p className="msg">heii there! I am using chatapp</p>
-          <div>
-            <img src={assets.profile_img} alt="" />
-            <p>2.50</p>
-          </div>
-        </div>
       </div>
 
       <div className="chat-input">
@@ -153,6 +195,7 @@ const Chatbox = () => {
           placeholder="Send a message"
         />
         <input
+          onChange={sendimage}
           type="file"
           name="file"
           id="image"
@@ -171,7 +214,7 @@ const Chatbox = () => {
       </div>
     </div>
   ) : (
-    <div className="chat-welcome">
+    <div className={`chat-welcome ${chatvisible ? "" : "hidden"}`}>
       <img src={assets.logo_icon} alt="" />
       <p>
         Welcome to chatapp

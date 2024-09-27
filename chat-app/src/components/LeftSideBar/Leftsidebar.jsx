@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Leftsidebar.css";
 import assets from "../../assets/assets";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +6,7 @@ import {
   arrayUnion,
   collection,
   doc,
+  getDoc,
   getDocs,
   query,
   serverTimestamp,
@@ -15,11 +16,20 @@ import {
 } from "firebase/firestore";
 import { db } from "../../config/firebase";
 import { appcontext } from "../../context/appcontext";
+import { toast } from "react-toastify";
 
 const Leftsidebar = () => {
   const navigate = useNavigate();
-  const { userdata, chatdata, chatuser, setchatuser, setmessagesId } =
-    useContext(appcontext);
+  const {
+    userdata,
+    chatdata,
+    chatuser,
+    messagesId,
+    setchatuser,
+    setmessagesId,
+    chatvisible,
+    setchatvisible,
+  } = useContext(appcontext);
   const [user, setuser] = useState(null);
   const [search, setsearch] = useState(false);
   // using collection() function to get a reference to the 'users' collection
@@ -96,7 +106,7 @@ const Leftsidebar = () => {
       const newmessageref = doc(messageref);
       await setDoc(newmessageref, {
         createAt: serverTimestamp(),
-        message: [],
+        messages: [],
       });
 
       await updateDoc(doc(chatref, user.id), {
@@ -117,18 +127,57 @@ const Leftsidebar = () => {
           messageSeen: true,
         }),
       });
+
+      const userSnap = await getDoc(doc(db, "users", user.id));
+      const userData = userSnap.data();
+      setchat({
+        messageId: newmessageref.id,
+        lastmessage: "",
+        rId: user.id,
+        updatedAt: Date.now(),
+        messageSeen: true,
+        userData: userData,
+      });
+      setsearch(false);
+      setchatvisible(true);
     } catch (error) {
       console.log(error.message);
     }
   };
   const setchat = async (item) => {
-    console.log(item);
-    setmessagesId(item.messageId);
-    setchatuser(item);
+    try {
+      console.log(item);
+      setmessagesId(item.messageId);
+      setchatuser(item);
+      const userchatref = doc(db, "chats", userdata.id);
+      const userchatsnapshot = await getDoc(userchatref);
+      const userchatdata = userchatsnapshot.data();
+      const chatindex = userchatdata.chatData.findIndex(
+        (c) => c.messageId === item.messageId
+      );
+      userchatdata.chatData[chatindex].messageSeen = true;
+      await updateDoc(userchatref, {
+        chatData: userchatdata.chatData,
+      });
+      setchatvisible(true);
+    } catch (error) {
+      console.log(error.message);
+      toast.error(error.message);
+    }
   };
 
+  useEffect(() => {
+    const updatechatuserdata = async () => {
+      if (chatuser) {
+        const userchatref = doc(db, "chats", chatuser.userData.id);
+        const userchatsnapshot = await getDoc(userchatref);
+        const userchatdata = userchatsnapshot.data();
+        setchatuser((prev) => ({ ...prev, userData: userdata }));
+      }
+    };
+  }, [chatdata]);
   return (
-    <div className="ls">
+    <div className={`ls ${chatvisible ? "hidden" : ""}`}>
       <div className="ls-top">
         <div className="ls-nav">
           <img src={assets.logo} alt="logo" className="logo" />
@@ -174,7 +223,11 @@ const Leftsidebar = () => {
                   setchat(item);
                 }}
                 key={index}
-                className="friends"
+                className={`friends ${
+                  item.messageSeen || item.messageId === messagesId
+                    ? ""
+                    : "border"
+                }`}
               >
                 <img src={item.userData.avathar} alt="" />
                 <div>

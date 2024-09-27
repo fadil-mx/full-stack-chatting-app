@@ -15,3 +15,18 @@
 img.dot {
   width: 15px !important;
 }
+
+@media (max-width: 900px) {
+  .hidden {
+    display: none;
+
+  }
+
+  .chat-user .arrow {
+    display: block;
+  }
+
+  .chat-user .help {
+    display: none;
+  }
+}

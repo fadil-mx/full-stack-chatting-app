@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Login.css";
 import assets from "../../assets/assets";
-import { singup, loginuser } from "../../config/firebase";
+import { singup, loginuser, resetpassword } from "../../config/firebase";
 
 const Login = () => {
   const [curstate, setCurstate] = useState("signup");
@@ -32,24 +32,25 @@ const Login = () => {
       <img src={assets.logo_big} className="logo" alt="" />
       <form onSubmit={submithandler} className="login-form">
         <h2>{curstate === "signup" ? "Sign up" : "Login"}</h2>
-        <input
-          onChange={(e) => {
-            setusername(e.target.value);
-          }}
-          type="text"
-          placeholder="Username"
-          className="form-input"
-        />
         {curstate === "signup" ? (
           <input
             onChange={(e) => {
-              setemail(e.target.value);
+              setusername(e.target.value);
             }}
-            type="email"
-            placeholder="Email"
+            type="text"
+            placeholder="Username"
             className="form-input"
           />
         ) : null}
+        <input
+          onChange={(e) => {
+            setemail(e.target.value);
+          }}
+          type="email"
+          placeholder="Email"
+          className="form-input"
+        />
+
         <input
           onChange={(e) => {
             setpassword(e.target.value);
@@ -77,6 +78,12 @@ const Login = () => {
               <span onClick={() => setCurstate("signup")}>Click here</span>
             </p>
           )}
+          {curstate === "login" ? (
+            <p className=" login-toggle">
+              Forgot password{" "}
+              <span onClick={() => resetpassword(email)}>reset here</span>
+            </p>
+          ) : null}
         </div>
       </form>
     </div>

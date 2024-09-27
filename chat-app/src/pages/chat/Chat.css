@@ -22,3 +22,13 @@
         grid-template-rows: 1fr 2fr 1fr;
     }
 }
+
+@media (max-width: 900px) {
+    .chat-container {
+        display: flex;
+    }
+
+    .loading {
+        font-size: 30px;
+    }
+}

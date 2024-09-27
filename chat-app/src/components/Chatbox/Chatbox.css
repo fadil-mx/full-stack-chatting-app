@@ -148,3 +148,13 @@
     font-weight: 500;
     background: rgb(207, 219, 215)
 }
+
+.arrow {
+    display: none;
+}
+
+@media (max-width:900px) {
+    .chat-box {
+        width: 100%;
+    }
+}

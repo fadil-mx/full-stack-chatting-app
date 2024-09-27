@@ -54,9 +54,18 @@
 .login-toggle {
     font-size: 14px;
     color: #5c5c5c;
+    margin-bottom: 10px;
 }
 
 .login-toggle span {
     color: #2e86de;
     cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .login {
+        flex-direction: column;
+        justify-content: center;
+        gap: 20px;
+    }
 }
