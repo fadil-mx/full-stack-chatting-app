@@ -14,7 +14,7 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { db } from "../../config/firebase";
+import { db,logout } from "../../config/firebase";
 import { appcontext } from "../../context/appcontext";
 import { toast } from "react-toastify";
 
@@ -32,36 +32,6 @@ const Leftsidebar = () => {
   } = useContext(appcontext);
   const [user, setuser] = useState(null);
   const [search, setsearch] = useState(false);
-  // using collection() function to get a reference to the 'users' collection
-  //and query() function to get a query object that will fetch the user document where the name field is equal to the input value.
-  //The getDocs() function is used to fetch the documents that match the query.
-  // const inputhandler = async (e) => {
-  //   try {
-  //     const input = e.target.value;
-  //     if (input) {
-  //       setsearch(true);
-  //       const userref = collection(db, "users");
-  //       const q = query(userref, where("name", "==", input.toLowerCase()));
-  //       const querySnapshot = await getDocs(q);
-  //       if (
-  //         !querySnapshot.empty &&
-  //         querySnapshot.docs[0].data().id !== userdata.id
-  //       ) {
-  //         // console.log(querySnapshot);
-  //         let firstDoc = querySnapshot.docs[0];
-  //         // Access the first document
-  //         // console.log(firstDoc.data());
-  //         setuser(firstDoc.data());
-  //       } else {
-  //         setuser(null);
-  //       }
-  //     } else {
-  //       setsearch(false);
-  //     }
-  //   } catch (error) {
-  //     console.log(error.message);
-  //   }
-  // };
 
   const inputhandler = async (e) => {
     try {
@@ -192,7 +162,9 @@ const Leftsidebar = () => {
                 Edit profile
               </p>
               <hr />
-              <p>Log out</p>
+              <p onClick={() => {
+                  logout();
+                }}>Log out</p>
             </div>
           </div>
         </div>
